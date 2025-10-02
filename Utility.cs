@@ -30,13 +30,37 @@ namespace Silkworm
 
             for (int i = 0; i < keys.Length; i++)
             {
-                string[] parts = keys[i].Split(splitChar);
-                if (parts.Length <2)
+                // Skip empty lines
+                if (string.IsNullOrWhiteSpace(keys[i]))
                 {
                     continue;
                 }
-                parts[0] = parts[0].Replace(" ", "");
+
+                // Skip comment lines (lines starting with #)
+                string trimmedLine = keys[i].Trim();
+                if (trimmedLine.StartsWith("#"))
+                {
+                    continue;
+                }
+
+                string[] parts = keys[i].Split(new char[] { splitChar }, 2); // Split only on first '='
+                if (parts.Length < 2)
+                {
+                    continue;
+                }
+
+                // Remove all spaces from key and trim
+                parts[0] = parts[0].Replace(" ", "").Trim();
                 string dkey = parts[0];
+
+                // Skip if key is empty or starts with # (comment)
+                if (string.IsNullOrWhiteSpace(dkey) || dkey.StartsWith("#"))
+                {
+                    continue;
+                }
+
+                // Trim the value
+                parts[1] = parts[1].Trim();
 
                 //Test if data contains any non-numerical information
                 //If it does, convert it to a type that can be easily used at the other end
@@ -47,10 +71,18 @@ namespace Silkworm
                     double ratio = (double.Parse(perc[0]))/100; //i.e. convert 100% to 1.0
                     parts[1] = ratio.ToString();
                 }
-                
+
                 string dvalue = parts[1];
 
-                Settings.Add(dkey, dvalue);
+                // Use indexer to handle duplicate keys (last one wins)
+                if (!Settings.ContainsKey(dkey))
+                {
+                    Settings.Add(dkey, dvalue);
+                }
+                else
+                {
+                    Settings[dkey] = dvalue; // Update if duplicate
+                }
 
                 //dictValues[i] = parts[1];
 
