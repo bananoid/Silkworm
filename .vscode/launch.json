@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug in Rhino",
+      "type": "mono",
+      "request": "attach",
+      "address": "localhost",
+      "port": 55555,
+      "preLaunchTask": "build (Debug)"
+    },
+    {
+      "name": "Launch Rhino (Manual Attach)",
+      "type": "mono",
+      "request": "launch",
+      "program": "/Applications/Rhino 8.app/Contents/MacOS/Rhinoceros",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build (Debug)",
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}

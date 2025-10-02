@@ -1,0 +1,15 @@
+{
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/*.user": true
+  },
+  "dotnet.defaultSolution": "Silkworm.sln",
+  "omnisharp.useModernNet": false,
+  "omnisharp.monoPath": "",
+  "omnisharp.enableRoslynAnalyzers": true,
+  "omnisharp.enableEditorConfigSupport": true,
+  "editor.formatOnSave": false,
+  "files.encoding": "utf8",
+  "files.eol": "\n"
+}
