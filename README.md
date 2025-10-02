@@ -1,108 +1,168 @@
-Silkworm
-========
+# Silkworm
 
-Silkworm is a plugin that translates Grasshopper and Rhino geometry into GCode for 3d printing. Silkworm allows for the complete and intuitive manipulation of the printer GCode, enabling novel printed material properties to be specified by non-solid geometry and techniques of digital craft.
+Silkworm is a Grasshopper plugin that translates Grasshopper and Rhino geometry into GCode for 3D printing. It enables complete and intuitive manipulation of printer GCode, allowing novel printed material properties to be specified through non-solid geometry and techniques of digital craft.
 
-Development
-========
-For the development list and notes on Silkworm development please refer to the Teambox tasklist.
+## Features
 
+✨ **Direct Geometry to GCode** - Convert Grasshopper geometry directly to 3D printer instructions
+🎨 **Custom Toolpaths** - Full control over print paths and parameters
+🌊 **Non-Planar Printing** - Variable layer heights and non-planar toolpaths
+🏺 **Ceramic/Paste Support** - Optimized for large nozzle paste extrusion
+⚡ **Variable Parameters** - Per-segment control of flow and speed
 
-Installation
-========
+## Quick Start
 
-### Building from Source (macOS/VSCode)
+### Installation
 
-This project has been modernized for development with Visual Studio Code on macOS:
+#### Building from Source (macOS/VSCode)
 
 1. **Prerequisites**:
-   - .NET SDK 9.0+ installed
+   - .NET SDK 9.0+
    - Rhino 8 for macOS
-   - VSCode with C# Dev Kit extension (recommended)
+   - VSCode with C# Dev Kit (recommended)
 
-2. **Build the project**:
+2. **Build**:
    ```bash
    dotnet build -c Debug
    ```
-   The Debug build automatically installs to your Grasshopper Libraries folder.
 
-3. **VSCode Tasks**:
-   - Press `Cmd+Shift+B` to build
-   - Use "Tasks: Run Build Task" for more options
-
-4. **The compiled `.gha` file** will be installed to:
+3. The `.gha` file installs automatically to:
    ```
    ~/Library/Application Support/McNeel/Rhinoceros/8.0/Plug-ins/Grasshopper (...)/Libraries/
    ```
 
-### Legacy Installation (Visual Studio)
+4. **VSCode**: Press `Cmd+Shift+B` to build
 
-To install please compile in Visual Studio (make sure you specify a location for the .gha file that you can find!) and then locate your Grasshopper Components Folder and place the compiled .gha file in there.
+#### Legacy (Visual Studio)
 
+Compile in Visual Studio and copy the `.gha` file to your Grasshopper Components folder.
 
-Usage
-========
+### Basic Usage
 
-### Settings Configuration
+1. **Load Settings** - Use the LoadSettings component with a `.ini` file from [`settings/`](settings/)
+2. **Create Geometry** - Design your toolpath in Grasshopper
+3. **Generate GCode** - Connect to the Silkworm Generator
+4. **Visualize** - Use the Silkworm Viewer for visual feedback
 
-Silkworm requires a settings file (`.ini` format) to configure your 3D printer parameters. Three example settings files are included:
+## Documentation
 
-- **`silkworm_settings_basic.ini`** - Standard PLA printing settings
-- **`silkworm_settings_high_quality.ini`** - High quality, slower prints
-- **`silkworm_settings_fast_draft.ini`** - Fast prototyping and draft prints
+📖 **[Full Documentation](docs/README.md)** - Complete usage guide and reference
 
-### Creating Your Settings File
+📚 **[Non-Planar Printing Guide](docs/NON_PLANAR_PRINTING_GUIDE.md)** - Variable layer heights and ceramic printing
 
-1. **Copy one of the example files** as a starting point
-2. **Edit the values** to match your printer specifications
-3. **In Grasshopper**:
-   - Add the "LoadSettings" component
-   - Double-click it to browse for your `.ini` file
-   - Connect the output to the Silkworm Generator's "Settings" input
+🔢 **[Flow Calculation Reference](docs/FLOW_CALCULATION_REFERENCE.md)** - Math and formulas for extrusion
 
-### Settings File Format
+## Example Settings
 
-The settings file uses a simple `key = value` format:
+Pre-configured settings files are available in [`settings/`](settings/):
 
-```ini
-# Comments start with #
-layer_height = 0.2
-nozzle_diameter = 0.4
-temperature = 210
-perimeter_speed = 30
-fill_density = 0.2
-# Or use percentages (automatically converted)
-fill_density = 20%
+**Standard FDM (0.4mm nozzle):**
+- [`basic.ini`](settings/silkworm_settings_basic.ini) - Standard PLA
+- [`high_quality.ini`](settings/silkworm_settings_high_quality.ini) - Fine detail
+- [`fast_draft.ini`](settings/silkworm_settings_fast_draft.ini) - Rapid prototyping
+
+**Ceramic/Paste (1.5mm nozzle):**
+- [`ceramic_1.5mm.ini`](settings/silkworm_settings_ceramic_1.5mm.ini) - Ceramic paste extrusion
+
+## Advanced Features
+
+### Non-Planar Printing
+
+Silkworm's Movement component supports **variable layer heights** and **non-planar paths**:
+
+```
+Movement Component Inputs:
+├── Geometry: 3D line segments
+├── Flow: Variable flow per segment (mm²)
+├── Speed: Variable speed per segment (mm/min)
+└── Delimiter: Movement end behavior
 ```
 
-### Key Settings to Customize
+**Example: Variable Layer Height**
+```python
+# For each segment:
+layerHeight = abs(z_current - z_previous)
+flow = lineWidth × layerHeight
+```
 
-**Printer Dimensions**:
-- `nozzle_diameter` - Your nozzle size (typically 0.4mm)
-- `filament_diameter` - Filament size (1.75mm or 2.85mm)
+See the [Non-Planar Printing Guide](docs/NON_PLANAR_PRINTING_GUIDE.md) for detailed workflows.
 
-**Print Quality**:
-- `layer_height` - Layer thickness (0.1-0.3mm typical)
-- `perimeters` - Number of outer shells (2-4)
-- `solid_layers` - Top/bottom solid layers (3-5)
-- `fill_density` - Infill percentage (0.0 to 1.0 or 0% to 100%)
+### Ceramic Printing
 
-**Temperatures** (adjust for your material):
-- `temperature` - Printing temperature (°C)
-- `bed_temperature` - Bed temperature (°C)
+Large nozzle (1.5mm) ceramic paste printing with:
+- Variable layer heights (0.5-1.2mm)
+- No retraction (paste-based)
+- Slower speeds (5-20 mm/s)
+- Custom flow calculations
 
-**Speeds** (mm/s):
-- `perimeter_speed` - Outer wall speed
-- `infill_speed` - Infill print speed
-- `travel_speed` - Non-printing move speed
+See [`settings/ceramic_1.5mm.ini`](settings/silkworm_settings_ceramic_1.5mm.ini) for complete configuration.
 
-**Start/End GCode**:
-- `start_gcode` - Commands run before print (homing, purging)
-- `end_gcode` - Commands run after print (cooling, parking)
+## Project Structure
 
-Use `\n` for line breaks in GCode settings.
+```
+Silkworm/
+├── settings/              # Printer configuration files
+│   ├── silkworm_settings_basic.ini
+│   ├── silkworm_settings_high_quality.ini
+│   ├── silkworm_settings_fast_draft.ini
+│   └── silkworm_settings_ceramic_1.5mm.ini
+│
+├── docs/                  # Documentation
+│   ├── README.md
+│   ├── NON_PLANAR_PRINTING_GUIDE.md
+│   └── FLOW_CALCULATION_REFERENCE.md
+│
+├── .vscode/              # VSCode configuration
+├── Properties/           # Assembly info
+├── References/           # DLL references
+├── Resources/            # Icons and assets
+│
+└── [*.cs]                # C# source files
+```
 
-### Complete Settings Reference
+## Development
 
-See the example `.ini` files for all available settings with detailed comments.
+### Building
 
+```bash
+# Debug (auto-install to Grasshopper)
+dotnet build -c Debug
+
+# Release (output to bin/Release/)
+dotnet build -c Release
+```
+
+### VSCode Tasks
+
+- `Cmd+Shift+B` - Default build
+- Tasks menu:
+  - Build (Debug)
+  - Build (Release)
+  - Clean
+  - Rebuild
+
+## Credits
+
+Silkworm is an open project initiated by:
+- Adam Holloway
+- Arthur Mamou-Mani ([mamou-mani.com](http://mamou-mani.com))
+- Karl Kjelstrup-Johnson ([krk-j.com](http://krk-j.com))
+
+Licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues or pull requests.
+
+## Resources
+
+- **McNeel Forum Discussions**:
+  - [Non-Planar 3D Printing](https://discourse.mcneel.com/t/non-planar-3d-printing/151873)
+  - [Ceramic Printing Design](https://discourse.mcneel.com/t/designing-for-3d-printing-especially-ceramics/79137)
+
+- **Related Projects**:
+  - [nonplanar3d](https://github.com/r3dsign/nonplanar3d) - Grasshopper non-planar path generation
+
+---
+
+**Download**: Visit [ProjectSilkworm.com](http://ProjectSilkworm.com) for more information
