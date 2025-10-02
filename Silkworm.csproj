@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(HOME)/Library/Application Support/McNeel/Rhinoceros/8.0/Plug-ins/Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)/Libraries/</OutputPath>
+    <OutputPath>bin/Debug/</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
@@ -62,6 +62,12 @@
 
   <ItemGroup>
     <None Include="Resources\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude analysis tools and temporary files from compilation -->
+    <Compile Remove="AnalyzeSilkworm2/**/*.cs" />
+    <Compile Remove="analyze_silkworm2.csx" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

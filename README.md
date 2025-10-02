@@ -52,6 +52,10 @@ Compile in Visual Studio and copy the `.gha` file to your Grasshopper Components
 
 🔢 **[Flow Calculation Reference](docs/FLOW_CALCULATION_REFERENCE.md)** - Math and formulas for extrusion
 
+🔧 **[Troubleshooting Guide](docs/TROUBLESHOOTING.md)** - Common issues and solutions
+
+🐛 **[Datatype Error Diagnostic](docs/DATATYPE_ERROR_DIAGNOSTIC.md)** - Fix "Datatype Not Supported!" errors
+
 ## Example Settings
 
 Pre-configured settings files are available in [`settings/`](settings/):

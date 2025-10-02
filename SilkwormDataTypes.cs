@@ -531,7 +531,17 @@ namespace Silkworm.Type
             rounded = Math.Round(longnum, 2);
 
             return rounded;
-        
+
+        }
+
+        public int CountDecimalPlaces(double value)
+        {
+            // Count decimal places for precision control in GCode output
+            string valueStr = value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            int decimalIndex = valueStr.IndexOf('.');
+            if (decimalIndex == -1)
+                return 0;
+            return valueStr.Length - decimalIndex - 1;
         }
 
         public List<GH_String> Lift()
@@ -728,7 +738,73 @@ namespace Silkworm.Type
 
             return gCode;
         }
-        
+
+        /// <summary>
+        /// ToGCode method that works without Configuration dictionary
+        /// Use this when flow and speed are already set on individual SilkwormLines
+        /// Perfect for manual workflows (ceramic printing, non-planar, etc.)
+        /// </summary>
+        public List<GH_String> ToGCodeSimple(bool absoluteExtrusion = true)
+        {
+            List<GH_String> gCode = new List<GH_String>();
+
+            // If this is a GCode movement, just return the stored GCode
+            if (isGCode)
+            {
+                foreach (string line in GCode)
+                {
+                    gCode.Add(new GH_String(line));
+                }
+                return gCode;
+            }
+
+            // Check if movement is complete (all lines have flow and speed set)
+            if (!complete)
+            {
+                gCode.Add(new GH_String("; Incomplete Silkworm Movement - missing flow or speed values"));
+                return gCode;
+            }
+
+            if (isPt)
+            {
+                // Point-based movement (blob)
+                // START
+                gCode.AddRange(Delimiter(0));
+                // END
+                gCode.AddRange(Delimiter(1));
+            }
+            else
+            {
+                // Line-based movement
+                // START - Add delimiter GCode
+                gCode.AddRange(Delimiter(0));
+
+                // BODY - Convert each line to GCode
+                double eLengthAll = 0;
+                foreach (SilkwormLine line in sMovement)
+                {
+                    line.calcExtrusion();
+                    eLengthAll += line.sExtrusion;
+
+                    if (absoluteExtrusion)
+                    {
+                        line.aExtrusion = eLengthAll;
+                    }
+                    else
+                    {
+                        line.aExtrusion = line.sExtrusion;
+                    }
+
+                    gCode.AddRange(line.ToGCode(2));
+                }
+
+                // END - Add delimiter GCode
+                gCode.AddRange(Delimiter(1));
+            }
+
+            return gCode;
+        }
+
         public override string ToString()
         {
             if (complete)

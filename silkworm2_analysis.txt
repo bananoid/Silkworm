@@ -1,0 +1,295 @@
+=== SILKWORM2 ASSEMBLY ANALYSIS (using Mono.Cecil) ===
+
+Assembly: Silkworm
+Version: 0.1.1.26851
+Runtime: Net_4_0
+Total Types: 13
+
+
+= Namespace:  =
+
+  Type: <Module>
+  Full Name: <Module>
+  Base Type: none
+  IsClass: True, IsInterface: False, IsEnum: False
+
+= Namespace: MyProject1 =
+
+  Type: DelimiterComponent
+  Full Name: MyProject1.DelimiterComponent
+  Base Type: Grasshopper.Kernel.GH_Component
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (1):
+    - .ctor()
+  Methods (3):
+    - protected virtual Void RegisterInputParams(GH_InputParamManager pManager)
+    - protected virtual Void RegisterOutputParams(GH_OutputParamManager pManager)
+    - protected virtual Void SolveInstance(IGH_DataAccess DA)
+  Properties (2):
+    - Bitmap Icon { get; }
+    - Guid ComponentGuid { get; }
+
+= Namespace: Silkworm =
+
+  Type: Flow
+  Full Name: Silkworm.Flow
+  Base Type: Grasshopper.Kernel.GH_Component
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (1):
+    - .ctor()
+  Methods (3):
+    - protected virtual Void RegisterInputParams(GH_InputParamManager pManager)
+    - protected virtual Void RegisterOutputParams(GH_OutputParamManager pManager)
+    - protected virtual Void SolveInstance(IGH_DataAccess DA)
+  Properties (2):
+    - Bitmap Icon { get; }
+    - Guid ComponentGuid { get; }
+
+  Type: SilkwormCompiler
+  Full Name: Silkworm.SilkwormCompiler
+  Base Type: Grasshopper.Kernel.GH_Component
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (1):
+    - .ctor()
+  Methods (7):
+    - protected virtual Void RegisterInputParams(GH_InputParamManager pManager)
+    - protected virtual Void RegisterOutputParams(GH_OutputParamManager pManager)
+    - protected virtual Void SolveInstance(IGH_DataAccess DA)
+    - public static Boolean IsOdd(Int32 value)
+    - public Boolean isCompleteLine(SilkwormLine sline)
+    - public Int32 CountDecimalPlaces(Double double1)
+    - public List`1 FindUniqueZValues(List`1 anyMovements, Int32 layerHeightDP)
+  Properties (2):
+    - Bitmap Icon { get; }
+    - Guid ComponentGuid { get; }
+
+  Type: SilkwormMovementComponent
+  Full Name: Silkworm.SilkwormMovementComponent
+  Base Type: Grasshopper.Kernel.GH_Component
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (1):
+    - .ctor()
+  Methods (3):
+    - protected virtual Void RegisterInputParams(GH_InputParamManager pManager)
+    - protected virtual Void RegisterOutputParams(GH_OutputParamManager pManager)
+    - protected virtual Void SolveInstance(IGH_DataAccess DA)
+  Properties (3):
+    - Bitmap Icon { get; }
+    - GH_Exposure Exposure { get; }
+    - Guid ComponentGuid { get; }
+
+  Type: SilkwormViewer
+  Full Name: Silkworm.SilkwormViewer
+  Base Type: Grasshopper.Kernel.GH_Component
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (1):
+    - .ctor()
+  Methods (5):
+    - protected virtual Void RegisterInputParams(GH_InputParamManager pManager)
+    - protected virtual Void RegisterOutputParams(GH_OutputParamManager pManager)
+    - protected virtual Void SolveInstance(IGH_DataAccess DA)
+    - public static Boolean IsOdd(Int32 value)
+    - public virtual Void DrawViewportWires(IGH_PreviewArgs args)
+  Fields (10):
+    - public Boolean displayLogistics
+    - public List`1 startPoints
+    - public List`1 endPoints
+    - public List`1 DelimitMarkers
+    - public Boolean displayValues
+    - public List`1 Colors
+    - public List`1 Movements
+    - public List`1 lineThicknesses
+    - public List`1 blobPts
+    - public List`1 blobDiameter
+  Properties (3):
+    - Bitmap Icon { get; }
+    - Boolean IsPreviewCapable { get; }
+    - Guid ComponentGuid { get; }
+
+= Namespace: Silkworm.Properties =
+
+  Type: Resources
+  Full Name: Silkworm.Properties.Resources
+  Base Type: System.Object
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (1):
+    - .ctor()
+  Fields (2):
+    - private static ResourceManager resourceMan
+    - private static CultureInfo resourceCulture
+  Properties (7):
+    - ResourceManager ResourceManager { get; }
+    - CultureInfo Culture { get; set; }
+    - Bitmap Delimiter { get; }
+    - Bitmap FlowCalculator { get; }
+    - Bitmap Generator { get; }
+    - Bitmap Movement { get; }
+    - Bitmap SilkwormViewer { get; }
+  Attributes (3):
+    - [GeneratedCodeAttribute]
+    - [DebuggerNonUserCodeAttribute]
+    - [CompilerGeneratedAttribute]
+
+  Type: Settings
+  Full Name: Silkworm.Properties.Settings
+  Base Type: System.Configuration.ApplicationSettingsBase
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (2):
+    - .ctor()
+    - .cctor()
+  Fields (1):
+    - private static Settings defaultInstance
+  Properties (1):
+    - Settings Default { get; }
+  Attributes (2):
+    - [CompilerGeneratedAttribute]
+    - [GeneratedCodeAttribute]
+
+= Namespace: Silkworm.Type =
+
+  Type: Delimiter
+  Full Name: Silkworm.Type.Delimiter
+  Base Type: Silkworm.Type.SimpleGooImplementation
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (5):
+    - .ctor()
+    - .ctor(Double retract_lift, Double retract_length, Double retract_restart_extra, Double retract_speed, Double travel_speed)
+    - .ctor(Vector3d startvector, Vector3d endvector, Double startspeed, Double endspeed, Double startpressure, Double endpressure, Double travelspeed)
+    - .ctor(Vector3d startvector, Double startspeed, Double startpressure, Double travelspeed)
+    - .ctor(Double endspeed, Double endpressure, Vector3d endvector, Double travelspeed)
+  Fields (7):
+    - public Vector3d startVec
+    - public Vector3d endVec
+    - public Double startSpeed
+    - public Double endSpeed
+    - public Double startPressure
+    - public Double endPressure
+    - public Double travelSpeed
+
+  Type: SilkwormLine
+  Full Name: Silkworm.Type.SilkwormLine
+  Base Type: Silkworm.Type.SimpleGooImplementation
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (2):
+    - .ctor()
+    - .ctor(Double Flow, Double Speed, Line Curve)
+  Methods (4):
+    - public Void calcExtrusion()
+    - public List`1 ToGCode(Int32 mode)
+    - public Double Round(Double longnum)
+    - public virtual String ToString()
+  Fields (5):
+    - private Double sFlow
+    - private Double sSpeed
+    - public Line sCurve
+    - private Double Extrusion
+    - public Double AllExtrude
+  Properties (5):
+    - Double Flow { get; set; }
+    - Double Speed { get; set; }
+    - Line sLine { get; set; }
+    - Double aExtrusion { get; set; }
+    - Double sExtrusion { get; }
+
+  Type: SilkwormModel
+  Full Name: Silkworm.Type.SilkwormModel
+  Base Type: System.Collections.Generic.List`1<System.Collections.Generic.List`1<Silkworm.Type.SilkwormMovement>>
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (2):
+    - .ctor()
+    - .ctor(List`1 sMovements)
+  Methods (2):
+    - public Void displayModel(Double startPrev, Double endPrev, Int32 res, List`1& sLines, List`1& lineThickness, List`1& DelimitMarkers, List`1& blobPoints, List`1& blobDiameter, List`1& Colors, List`1& startPoints, List`1& endPoints)
+    - public Void meshsLine(List`1 sLines, Int32 res, Mesh& meshedModel)
+  Fields (1):
+    - public List`1 sModel
+
+  Type: SilkwormMovement
+  Full Name: Silkworm.Type.SilkwormMovement
+  Base Type: System.Collections.Generic.List`1<Silkworm.Type.SilkwormLine>
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (4):
+    - .ctor()
+    - .ctor(List`1 s_Movement, Delimiter s_Delimiter)
+    - .ctor(Point3d point, Delimiter s_Delimiter)
+    - .ctor(List`1 gcode)
+  Methods (5):
+    - public Double Round(Double longnum)
+    - public List`1 Delimiter(Int32 option)
+    - public List`1 ToGCode()
+    - public virtual String ToString()
+    - public List`1 DuplicateSegments(PolylineCurve plinecurve)
+  Fields (13):
+    - public List`1 sMovement
+    - public Delimiter sDelimiter
+    - public Point3d blobPoint
+    - public List`1 GCode
+    - public Boolean isPt
+    - public Boolean isGCode
+    - public Double Length
+    - public Double Time
+    - public Interval ZDomain
+    - public Boolean complete
+    - public Double retract_length
+    - public Double retract_lift
+    - public Double travel_speed
+
+  Type: SimpleGooImplementation
+  Full Name: Silkworm.Type.SimpleGooImplementation
+  Base Type: System.Object
+  IsClass: True, IsInterface: False, IsEnum: False
+  Constructors (1):
+    - .ctor()
+  Methods (8):
+    - private Boolean Grasshopper.Kernel.Types.IGH_Goo.CastFrom(Object source)
+    - private Boolean Grasshopper.Kernel.Types.IGH_Goo.CastTo(T& target)
+    - private IGH_Goo Grasshopper.Kernel.Types.IGH_Goo.Duplicate()
+    - private IGH_GooProxy Grasshopper.Kernel.Types.IGH_Goo.EmitProxy()
+    - private Object Grasshopper.Kernel.Types.IGH_Goo.ScriptVariable()
+    - private Boolean GH_IO.GH_ISerializable.Read(GH_IReader reader)
+    - private Boolean GH_IO.GH_ISerializable.Write(GH_IWriter writer)
+    - public virtual String ToString()
+  Properties (4):
+    - Boolean Grasshopper.Kernel.Types.IGH_Goo.IsValid { get; }
+    - String Grasshopper.Kernel.Types.IGH_Goo.IsValidWhyNot { get; }
+    - String Grasshopper.Kernel.Types.IGH_Goo.TypeDescription { get; }
+    - String Grasshopper.Kernel.Types.IGH_Goo.TypeName { get; }
+
+
+=== KEY COMPONENTS ANALYSIS ===
+
+Found 5 Grasshopper components:
+
+
+Component: SilkwormCompiler
+  Namespace: Silkworm
+  Base Type: Grasshopper.Kernel.GH_Component
+  Has ComponentGuid property (check IL for value)
+  Public Methods:
+    - Boolean IsOdd(Int32 value)
+    - Boolean isCompleteLine(SilkwormLine sline)
+    - Int32 CountDecimalPlaces(Double double1)
+    - List`1 FindUniqueZValues(List`1 anyMovements, Int32 layerHeightDP)
+
+Component: SilkwormMovementComponent
+  Namespace: Silkworm
+  Base Type: Grasshopper.Kernel.GH_Component
+  Has ComponentGuid property (check IL for value)
+
+Component: Flow
+  Namespace: Silkworm
+  Base Type: Grasshopper.Kernel.GH_Component
+  Has ComponentGuid property (check IL for value)
+
+Component: SilkwormViewer
+  Namespace: Silkworm
+  Base Type: Grasshopper.Kernel.GH_Component
+  Has ComponentGuid property (check IL for value)
+  Public Methods:
+    - Boolean IsOdd(Int32 value)
+    - Void DrawViewportWires(IGH_PreviewArgs args)
+
+Component: DelimiterComponent
+  Namespace: MyProject1
+  Base Type: Grasshopper.Kernel.GH_Component
+  Has ComponentGuid property (check IL for value)
